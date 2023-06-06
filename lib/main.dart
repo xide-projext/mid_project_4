@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/widgets.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class Music {
   String title;
@@ -115,7 +117,8 @@ void main() {
       '/musicplayer': (context) => const MusicPlayerApp(),
       '/playlist': (context) => const PlaylistScreen(),
       '/foryou': (context) => const ForYouScreen(),
-      '/form': (context) => const TextFormScreen()
+      '/form': (context) => const TextFormScreen(),
+      '/bluesky':(context) => BlueSky(),
     },
     theme: ThemeData(
     colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -191,8 +194,8 @@ class MainScreenState extends State<MainScreen> {
             Container(margin: const EdgeInsets.only(top: 25, left: 15),
               child: Row(
                 children: [
-                  Column(
-                    children: const [
+                  const Column(
+                    children: [
                       Text('For You',
                       style: TextStyle(color: Colors.black, fontSize: 30, fontWeight: FontWeight.w700))
                     ]),
@@ -214,7 +217,7 @@ class MainScreenState extends State<MainScreen> {
                     width: 150,
                     height: 150,
                     decoration: const BoxDecoration(
-                      image: DecorationImage(image: AssetImage('images/nggyu.jpeg'))
+                      image: DecorationImage(image: AssetImage('images/bluesky_ikson.jpeg'))
                     )
                   ),
                   const SizedBox(width: 30), 
@@ -267,7 +270,7 @@ class MainScreenState extends State<MainScreen> {
         BottomNavigationBarItem(icon: Icon(Icons.search),
         label: 'Search'),
         BottomNavigationBarItem(icon: Icon(Icons.person),
-        label: 'Profile')
+        label: 'My Page')
       ])
     );
   }
@@ -315,7 +318,7 @@ class PlaylistScreen extends StatelessWidget{
         BottomNavigationBarItem(icon: Icon(Icons.search),
         label: 'Search'),
         BottomNavigationBarItem(icon: Icon(Icons.person),
-        label: 'Profile')
+        label: 'My Page')
       ])
       )
     );
@@ -340,11 +343,17 @@ class ForYouScreen extends StatelessWidget{
             leading: SizedBox(
               height: 100,
               width: 100,
-              child: Image.asset('images/nggyu.jpeg')
+              child: Image.asset('images/bluesky_ikson.jpeg')
             ),
-            title: const Text('Never Gonna Give You Up', style: TextStyle(color: Colors.black)),
-            subtitle: const Text('Rick Astley', style: TextStyle(color: Colors.black)),
-            trailing: const Icon(Icons.play_arrow)),
+            title: const Text('Blue Sky', style: TextStyle(color: Colors.black)),
+            subtitle: const Text('Ikson', style: TextStyle(color: Colors.black)),
+            trailing: GestureDetector(
+              child: const Icon(Icons.play_arrow),
+              onTap: (){
+                      Navigator.pushNamed(
+                        context,
+                        '/bluesky');
+                    },)),
             ListTile(
             leading: SizedBox(
               height: 100,
@@ -426,11 +435,57 @@ class ForYouScreen extends StatelessWidget{
         BottomNavigationBarItem(icon: Icon(Icons.search),
         label: 'Search'),
         BottomNavigationBarItem(icon: Icon(Icons.person),
-        label: 'Profile')
+        label: 'My Page')
       ])
       )
     );
 }}
+
+class BlueSky extends StatefulWidget{
+  @override
+  _BlueSkyState createState() => _BlueSkyState();
+}
+
+class _BlueSkyState extends State<BlueSky> with SingleTickerProviderStateMixin {
+  bool isPlaying = false;
+  late AnimationController _animationController;
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  void togglePlayPause() {
+    setState(() {
+      isPlaying = !isPlaying;
+      if (isPlaying) {
+        _animationController.repeat();
+      } else {
+        _animationController.stop();
+      }
+    });
+  }
+  @override
+Widget build(BuildContext context){
+  return Scaffold(
+    appBar: AppBar(title: const Text('Now Playing: Blue Sky')),
+    body: Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          RotationTransition(turns: _animationController,
+          child: const CircleAvatar(backgroundImage: AssetImage('assets/images/bluesky_ikson.jpeg'),
+          radius: 100,),),
+          const SizedBox(height: 16),
+          IconButton(icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow,
+          size: 48,),
+          onPressed: togglePlayPause,)
+        ],
+      )
+    ));
+}
+}
 
 class TextFormScreen extends StatefulWidget{
   const TextFormScreen({Key? key}) : super(key: key);
