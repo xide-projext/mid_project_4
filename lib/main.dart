@@ -118,7 +118,7 @@ void main() {
       '/playlist': (context) => const PlaylistScreen(),
       '/foryou': (context) => const ForYouScreen(),
       '/form': (context) => const TextFormScreen(),
-      '/bluesky':(context) => BlueSky(),
+      '/bluesky':(context) => const BlueSky(),
     },
     theme: ThemeData(
     colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -442,6 +442,8 @@ class ForYouScreen extends StatelessWidget{
 }}
 
 class BlueSky extends StatefulWidget{
+  const BlueSky({super.key});
+
   @override
   _BlueSkyState createState() => _BlueSkyState();
 }
@@ -476,13 +478,13 @@ class _BlueSkyState extends State<BlueSky> with SingleTickerProviderStateMixin {
   @override
 Widget build(BuildContext context){
   return Scaffold(
-    appBar: AppBar(title: const Text('Now Playing: Blue Sky')),
+    appBar: AppBar(title: const Text('Now Playing: Blue Sky'), backgroundColor:  const Color.fromARGB(255, 224, 45, 255)),
     body: Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           RotationTransition(turns: _animationController,
-          child: const CircleAvatar(backgroundImage: AssetImage('assets/images/bluesky_ikson.jpeg'),
+          child: const CircleAvatar(backgroundImage: AssetImage('images/bluesky_ikson.jpeg'),
           radius: 100,),),
           const SizedBox(height: 16),
           IconButton(icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow,
