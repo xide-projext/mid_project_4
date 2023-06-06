@@ -451,6 +451,13 @@ class _BlueSkyState extends State<BlueSky> with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
 
   @override
+  void initState(){
+    super.initState();
+    _animationController = AnimationController(vsync: this,
+    duration: const Duration(seconds: 5),);
+  }
+  
+  @override
   void dispose() {
     _animationController.dispose();
     super.dispose();
