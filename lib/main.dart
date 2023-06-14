@@ -352,7 +352,7 @@ class ForYouScreen extends StatelessWidget{
               onTap: (){
                       Navigator.pushNamed(
                         context,
-                        '/bluesky');
+                        '/bluesky',);
                     },)),
             ListTile(
             leading: SizedBox(
@@ -764,7 +764,7 @@ class _MvProfileFormState extends State<MvProfileForm> {
             widget.updateProfile(_mvProfile);
             Navigator.pop(context);
           }
-        }, child: const Text('Add Music Video'),)
+        }, child: const Text('Add Music Video Herim'),)
       ],))
     );
   }
