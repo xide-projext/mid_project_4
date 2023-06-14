@@ -813,7 +813,7 @@ class _MvProfileFormState extends State<MvProfileForm> {
                     setState(() {
                       _mvProfile.url = value!;
                     });
-                    print('naoko');
+                    print('hara naoko');
                   },
                 ),
                 ElevatedButton(
