@@ -202,8 +202,8 @@ class MainScreenState extends State<MainScreen> {
               margin: const EdgeInsets.only(top: 25, left: 15),
               child: Row(
                 children: [
-                  Column(children: [
-                    Text('For You',
+                  const Column(children: [
+                    Text('For Herim',
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 30,
