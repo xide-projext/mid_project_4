@@ -204,7 +204,7 @@ class MainScreenState extends State<MainScreen> {
               margin: const EdgeInsets.only(top: 25, left: 15),
               child: Row(
                 children: [
-                  const Column(children: [
+                  Column(children: [
                     Text('For You',
                         style: TextStyle(
                             color: Colors.black,
@@ -461,8 +461,6 @@ class ForYouScreen extends StatelessWidget {
   }
 }
 
-
-
 class BlueSky extends StatefulWidget {
   const BlueSky({Key? key}) : super(key: key);
 
@@ -477,11 +475,11 @@ class _BlueSkyState extends State<BlueSky> with SingleTickerProviderStateMixin {
   Duration duration = Duration.zero;
   Duration position = Duration.zero;
 
-  Future setAudio() async{
+  Future setAudio() async {
     final player = AudioCache(prefix: 'musicfiles/');
     final url = await player.load('bluesky_ikson.mp3');
   }
-  
+
   @override
   void dispose() {
     audioPlayer.dispose();
@@ -561,7 +559,10 @@ class _BlueSkyState extends State<BlueSky> with SingleTickerProviderStateMixin {
             const SizedBox(height: 32),
             const Text(
               'Blue Sky',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black),
             ),
             const SizedBox(height: 4),
             const Text(
@@ -582,8 +583,10 @@ class _BlueSkyState extends State<BlueSky> with SingleTickerProviderStateMixin {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(formatTime(position), style: const TextStyle(color: Colors.black)),
-                  Text(formatTime(duration - position), style: const TextStyle(color: Colors.black)),
+                  Text(formatTime(position),
+                      style: const TextStyle(color: Colors.black)),
+                  Text(formatTime(duration - position),
+                      style: const TextStyle(color: Colors.black)),
                 ],
               ),
             ),
