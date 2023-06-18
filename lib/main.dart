@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/widgets.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'dart:async';
+import 'package:url_launcher/url_launcher.dart';
 
 class Music {
   String title;
@@ -119,7 +121,7 @@ void main() {
       routes: {
         '/': (context) => const MainScreen(),
         '/musicplayer': (context) => const MusicPlayerApp(),
-        '/playlist': (context) => const PlaylistScreen(),
+        '/dramaost': (context) => const DramaOSTScreen(),
         '/foryou': (context) => const ForYouScreen(),
         '/form': (context) => const TextFormScreen(),
         '/bluesky': (context) => const BlueSky(),
@@ -173,7 +175,7 @@ class MainScreenState extends State<MainScreen> {
                         height: 150,
                         width: 150),
                     onTap: () {
-                      Navigator.pushNamed(context, '/playlist');
+                      Navigator.pushNamed(context, '/dramaost');
                     },
                   ),
                   const Text('Drama OSTs',
@@ -203,7 +205,7 @@ class MainScreenState extends State<MainScreen> {
               child: Row(
                 children: [
                   const Column(children: [
-                    Text('For Herim',
+                    Text('For You',
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 30,
@@ -287,8 +289,8 @@ class MainScreenState extends State<MainScreen> {
   }
 }
 
-class PlaylistScreen extends StatelessWidget {
-  const PlaylistScreen({super.key});
+class DramaOSTScreen extends StatelessWidget {
+  const DramaOSTScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -459,51 +461,94 @@ class ForYouScreen extends StatelessWidget {
   }
 }
 
+
+
 class BlueSky extends StatefulWidget {
-  const BlueSky({super.key});
+  const BlueSky({Key? key}) : super(key: key);
 
   @override
   _BlueSkyState createState() => _BlueSkyState();
 }
 
 class _BlueSkyState extends State<BlueSky> with SingleTickerProviderStateMixin {
+  final audioPlayer = AudioPlayer();
   bool isPlaying = false;
   late AnimationController _animationController;
+  Duration duration = Duration.zero;
+  Duration position = Duration.zero;
+
+  Future setAudio() async{
+    final player = AudioCache(prefix: 'musicfiles/');
+    final url = await player.load('bluesky_ikson.mp3');
+  }
+  
+  @override
+  void dispose() {
+    audioPlayer.dispose();
+    _animationController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
     super.initState();
+    audioPlayer.onPlayerStateChanged.listen((state) {
+      setState(() {
+        isPlaying = state == PlayerState.playing;
+      });
+    });
+    audioPlayer.onDurationChanged.listen((newDuration) {
+      setState(() {
+        duration = newDuration;
+      });
+    });
+    audioPlayer.onPositionChanged.listen((newPosition) {
+      setState(() {
+        position = newPosition;
+      });
+    });
     _animationController = AnimationController(
       vsync: this,
       duration: const Duration(seconds: 5),
     );
   }
 
-  @override
-  void dispose() {
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  void togglePlayPause() {
+  void togglePlayPause() async {
+    if (isPlaying) {
+      await audioPlayer.pause();
+      _animationController.stop();
+    } else {
+      await audioPlayer.resume();
+      _animationController.repeat();
+    }
     setState(() {
       isPlaying = !isPlaying;
-      if (isPlaying) {
-        _animationController.repeat();
-      } else {
-        _animationController.stop();
-      }
     });
+  }
+
+  String formatTime(Duration duration) {
+    String twoDigits(int n) => n.toString().padLeft(2, '0');
+    final hours = twoDigits(duration.inHours);
+    final minutes = twoDigits(duration.inMinutes.remainder(60));
+    final seconds = twoDigits(duration.inSeconds.remainder(60));
+
+    return [
+      if (duration.inHours > 0) hours,
+      minutes,
+      seconds,
+    ].join(':');
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: const Text('Now Playing: Blue Sky'),
-            backgroundColor: const Color.fromARGB(255, 224, 45, 255)),
-        body: Center(
-            child: Column(
+      appBar: AppBar(
+        title: const Text('Now Playing: Blue Sky'),
+        backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             RotationTransition(
@@ -513,6 +558,35 @@ class _BlueSkyState extends State<BlueSky> with SingleTickerProviderStateMixin {
                 radius: 100,
               ),
             ),
+            const SizedBox(height: 32),
+            const Text(
+              'Blue Sky',
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.black),
+            ),
+            const SizedBox(height: 4),
+            const Text(
+              'Ikson',
+              style: TextStyle(fontSize: 20, color: Colors.black),
+            ),
+            Slider(
+              min: 0,
+              max: duration.inSeconds.toDouble(),
+              value: position.inSeconds.toDouble(),
+              onChanged: (value) async {
+                final position = Duration(seconds: value.toInt());
+                await audioPlayer.seek(position);
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(formatTime(position), style: const TextStyle(color: Colors.black)),
+                  Text(formatTime(duration - position), style: const TextStyle(color: Colors.black)),
+                ],
+              ),
+            ),
             const SizedBox(height: 16),
             IconButton(
               icon: Icon(
@@ -520,9 +594,11 @@ class _BlueSkyState extends State<BlueSky> with SingleTickerProviderStateMixin {
                 size: 48,
               ),
               onPressed: togglePlayPause,
-            )
+            ),
           ],
-        )));
+        ),
+      ),
+    );
   }
 }
 
@@ -813,7 +889,6 @@ class _MvProfileFormState extends State<MvProfileForm> {
                     setState(() {
                       _mvProfile.url = value!;
                     });
-                    print('hara naoko');
                   },
                 ),
                 ElevatedButton(
