@@ -1,0 +1,76 @@
+{
+    "music": [
+      {
+        "id": 1,
+        "title": "Blue Sky",
+        "artist": "Ikson",
+        "url": "https://www.youtube.com/watch?v=zc4ET9viVQ0",
+        "albumcover": "assets/images/bluesky_ikson.jpeg",
+        "bookmark": false
+      },
+      {
+        "id": 2,
+        "title": "Call Me Maybe",
+        "artist": "Carly Rae Jepsen",
+        "url": "https://www.youtube.com/watch?v=fWNaR-rxAic",
+        "albumcover": "assets/images/callmemaybe.jpeg",
+        "bookmark": true
+      },
+      {
+        "id": 3,
+        "title": "Wannabe",
+        "artist": "Spice Girls",
+        "url": "https://www.youtube.com/watch?v=gJLIiF15wjQ",
+        "albumcover": "assets/images/Wannabe.jpg",
+        "bookmark": false
+      },
+      {
+        "id": 4,
+        "title": "Aloha",
+        "artist": "Jo Jung Suk",
+        "url": "https://www.youtube.com/watch?v=3DOkxQ3HDXE",
+        "albumcover": "assets/images/hospitalplaylistcover.jpeg",
+        "bookmark": true
+      },
+      {
+        "id": 5,
+        "title": "Party in the USA",
+        "artist": "Miley Cyrus",
+        "url": "https://www.youtube.com/watch?v=M11SvDtPBhA",
+        "albumcover": "assets/images/Party_in_the_USA.jpg",
+        "bookmark": false
+      },
+      {
+        "id": 6,
+        "title": "Into the New World",
+        "artist": "SNSD",
+        "url": "https://www.youtube.com/watch?v=0k2Zzkw_-0I",
+        "albumcover": "assets/images/Snsd_itnw_cover.png",
+        "bookmark": true
+      },
+      {
+        "id": 7,
+        "title": "Red",
+        "artist": "Taylor Swift",
+        "url": "https://www.youtube.com/watch?v=Zlot0i3Zykw",
+        "albumcover": "assets/images/ts_red.png",
+        "bookmark": false
+      },
+      {
+        "id": 8,
+        "title": "Polaroid",
+        "artist": "Jonas Blue",
+        "url": "https://www.youtube.com/watch?v=77RmU8QcM4k",
+        "albumcover": "assets/images/PolaroidJonasBlue.jpg",
+        "bookmark": true
+      },
+      {
+        "id": 9,
+        "title": "Style",
+        "artist": "Taylor Swift",
+        "url": "https://www.youtube.com/watch?v=-CmadmM5cOk",
+        "albumcover": "assets/images/1989.png",
+        "bookmark": false
+      }
+    ]
+  }
