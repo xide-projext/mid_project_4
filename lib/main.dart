@@ -1,10 +1,12 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/widgets.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/services.dart';
 
 class Music {
   String title;
@@ -204,7 +206,7 @@ class MainScreenState extends State<MainScreen> {
               margin: const EdgeInsets.only(top: 25, left: 15),
               child: Row(
                 children: [
-                  Column(children: [
+                  const Column(children: [
                     Text('For You',
                         style: TextStyle(
                             color: Colors.black,
@@ -236,14 +238,14 @@ class MainScreenState extends State<MainScreen> {
                     height: 150,
                     decoration: const BoxDecoration(
                         image: DecorationImage(
-                            image: AssetImage('images/bluesky_ikson.jpeg')))),
+                            image: AssetImage('assets/images/bluesky_ikson.jpeg')))),
                 const SizedBox(width: 30),
                 Container(
                   width: 150,
                   height: 150,
                   decoration: const BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('images/callmemaybe.jpeg'))),
+                          image: AssetImage('assets/images/callmemaybe.jpeg'))),
                 ),
                 const SizedBox(width: 30),
                 Container(
@@ -251,7 +253,7 @@ class MainScreenState extends State<MainScreen> {
                   height: 150,
                   decoration: const BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('images/Wannabe.jpg'))),
+                          image: AssetImage('assets/images/Wannabe.jpg'))),
                 ),
                 const SizedBox(width: 30),
                 Container(
@@ -260,7 +262,7 @@ class MainScreenState extends State<MainScreen> {
                   decoration: const BoxDecoration(
                       image: DecorationImage(
                           image:
-                              AssetImage('images/hospitalplaylistcover.jpeg'))),
+                              AssetImage('assets/images/hospitalplaylistcover.jpeg'))),
                 ),
                 const SizedBox(width: 30),
                 Container(
@@ -268,7 +270,7 @@ class MainScreenState extends State<MainScreen> {
                   height: 150,
                   decoration: const BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('images/Party_in_the_USA.jpg'))),
+                          image: AssetImage('assets/images/Party_in_the_USA.jpg'))),
                 ),
                 const SizedBox(width: 30),
                 Container(
@@ -276,7 +278,7 @@ class MainScreenState extends State<MainScreen> {
                   height: 150,
                   decoration: const BoxDecoration(
                       image: DecorationImage(
-                          image: AssetImage('images/Snsd_itnw_cover.png'))),
+                          image: AssetImage('assets/images/Snsd_itnw_cover.png'))),
                 ),
               ]))
         ]),
@@ -308,7 +310,7 @@ class DramaOSTScreen extends StatelessWidget {
                     leading: SizedBox(
                         height: 100,
                         width: 100,
-                        child: Image.asset('images/if_taeyeon.jpeg')),
+                        child: Image.asset('assets/images/if_taeyeon.jpeg')),
                     title:
                         const Text('If', style: TextStyle(color: Colors.black)),
                     subtitle: const Text('Taeyeon',
@@ -319,7 +321,7 @@ class DramaOSTScreen extends StatelessWidget {
                         height: 100,
                         width: 100,
                         child:
-                            Image.asset('images/hospitalplaylistcover.jpeg')),
+                            Image.asset('assets/images/hospitalplaylistcover.jpeg')),
                     title: const Text('Introduce Me a Good Person',
                         style: TextStyle(color: Colors.black)),
                     subtitle: const Text('Joy',
@@ -338,8 +340,28 @@ class DramaOSTScreen extends StatelessWidget {
   }
 }
 
-class ForYouScreen extends StatelessWidget {
+class ForYouScreen extends StatefulWidget{
   const ForYouScreen({super.key});
+
+  @override
+  _ForYouScreenState createState() => _ForYouScreenState();
+}
+
+class _ForYouScreenState extends State<ForYouScreen> {
+  List<dynamic> jsonData = [];
+
+  @override
+  void initState(){
+    super.initState();
+    loadJsonData();
+  }
+
+  void loadJsonData() async {
+    String jsonString = await rootBundle.loadString('assets/db.json');
+    setState(() { jsonData = jsonDecode(jsonString)['music'];
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -350,105 +372,21 @@ class ForYouScreen extends StatelessWidget {
               backgroundColor: const Color.fromARGB(255, 224, 45, 255),
             ),
             body: Center(
-                child: ListView(
-              children: [
-                ListTile(
-                    leading: SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: Image.asset('images/bluesky_ikson.jpeg')),
-                    title: const Text('Blue Sky',
-                        style: TextStyle(color: Colors.black)),
-                    subtitle: const Text('Ikson',
-                        style: TextStyle(color: Colors.black)),
-                    trailing: GestureDetector(
-                      child: const Icon(Icons.play_arrow),
-                      onTap: () {
-                        Navigator.pushNamed(context, '/bluesky');
-                      },
-                    )),
-                ListTile(
-                    leading: SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: Image.asset('images/callmemaybe.jpeg')),
-                    title: const Text('Call Me Maybe',
-                        style: TextStyle(color: Colors.black)),
-                    subtitle: const Text('Carly Rae Jepsen',
-                        style: TextStyle(color: Colors.black)),
-                    trailing: const Icon(Icons.play_arrow)),
-                ListTile(
-                    leading: SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: Image.asset('images/Wannabe.jpg')),
-                    title: const Text('Wannabe',
-                        style: TextStyle(color: Colors.black)),
-                    subtitle: const Text('Spice Girls',
-                        style: TextStyle(color: Colors.black)),
-                    trailing: const Icon(Icons.play_arrow)),
-                ListTile(
-                    leading: SizedBox(
-                        height: 100,
-                        width: 100,
-                        child:
-                            Image.asset('images/hospitalplaylistcover.jpeg')),
-                    title: const Text('Aloha',
-                        style: TextStyle(color: Colors.black)),
-                    subtitle: const Text('Jo Jung Suk',
-                        style: TextStyle(color: Colors.black)),
-                    trailing: const Icon(Icons.play_arrow)),
-                ListTile(
-                    leading: SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: Image.asset('images/Party_in_the_USA.jpg')),
-                    title: const Text('Party in the USA',
-                        style: TextStyle(color: Colors.black)),
-                    subtitle: const Text('Miley Cyrus',
-                        style: TextStyle(color: Colors.black)),
-                    trailing: const Icon(Icons.play_arrow)),
-                ListTile(
-                    leading: SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: Image.asset('images/Snsd_itnw_cover.png')),
-                    title: const Text('Into the New World',
-                        style: TextStyle(color: Colors.black)),
-                    subtitle: const Text("Girls' Generation",
-                        style: TextStyle(color: Colors.black)),
-                    trailing: const Icon(Icons.play_arrow)),
-                ListTile(
-                    leading: SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: Image.asset('images/ts_red.png')),
-                    title: const Text('Red',
-                        style: TextStyle(color: Colors.black)),
-                    subtitle: const Text('Taylor Swift',
-                        style: TextStyle(color: Colors.black)),
-                    trailing: const Icon(Icons.play_arrow)),
-                ListTile(
-                    leading: SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: Image.asset('images/PolaroidJonasBlue.jpg')),
-                    title: const Text('Polaroid',
-                        style: TextStyle(color: Colors.black)),
-                    subtitle: const Text('Jonas Blue',
-                        style: TextStyle(color: Colors.black)),
-                    trailing: const Icon(Icons.play_arrow)),
-                ListTile(
-                    leading: SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: Image.asset('images/1989.png')),
-                    title: const Text('Style',
-                        style: TextStyle(color: Colors.black)),
-                    subtitle: const Text('Taylor Swift',
-                        style: TextStyle(color: Colors.black)),
-                    trailing: const Icon(Icons.play_arrow)),
-              ],
+                child: ListView.builder(
+                  itemCount: jsonData.length,
+                  itemBuilder: (context, index) {
+                    final item = jsonData[index];
+                    return ListTile(leading: SizedBox(height: 100, 
+                    width: 100, 
+                    child: Image(image: AssetImage(item['albumcover']))),
+                    title: Text(item['title'],style: const TextStyle(color: Colors.black)),
+                    subtitle: Text(item['artist'],style: const TextStyle(color: Colors.black)),
+                    trailing: GestureDetector(child: const Icon(Icons.play_arrow),
+                    onTap: () {
+                      launchUrl(Uri.parse(item['url']));
+                    },)
+                    );
+                  }
             )),
             bottomNavigationBar:
                 BottomNavigationBar(items: const <BottomNavigationBarItem>[
@@ -519,23 +457,22 @@ class _BlueSkyState extends State<BlueSky> with SingleTickerProviderStateMixin {
       await audioPlayer.resume();
       _animationController.repeat();
     }
-    setState(() {
-      isPlaying = !isPlaying;
-    });
-  }
+  setState(() {
+    isPlaying = !isPlaying;
+  });
+}
 
-  String formatTime(Duration duration) {
-    String twoDigits(int n) => n.toString().padLeft(2, '0');
-    final hours = twoDigits(duration.inHours);
-    final minutes = twoDigits(duration.inMinutes.remainder(60));
-    final seconds = twoDigits(duration.inSeconds.remainder(60));
 
-    return [
-      if (duration.inHours > 0) hours,
-      minutes,
-      seconds,
-    ].join(':');
+ String formatTime(Duration duration) {
+  if (duration.inMilliseconds <= 0) {
+    return '00:00';
   }
+  String twoDigits(int n) => n.toString().padLeft(2, '0');
+  final minutes = twoDigits(duration.inMinutes.remainder(60));
+  final seconds = twoDigits(duration.inSeconds.remainder(60));
+
+  return '$minutes:$seconds';
+}
 
   @override
   Widget build(BuildContext context) {
@@ -569,13 +506,10 @@ class _BlueSkyState extends State<BlueSky> with SingleTickerProviderStateMixin {
               'Ikson',
               style: TextStyle(fontSize: 20, color: Colors.black),
             ),
-            Slider(
-              min: 0,
-              max: duration.inSeconds.toDouble(),
-              value: position.inSeconds.toDouble(),
-              onChanged: (value) async {
-                final position = Duration(seconds: value.toInt());
-                await audioPlayer.seek(position);
+            Slider(min: 0,max: duration.inSeconds.toDouble(),value: position.inSeconds.toDouble(),
+              onChanged: (value) async {final position = Duration(seconds: value.toInt());
+              await audioPlayer.seek(position);
+              setState(() {this.position = position;});
               },
             ),
             Padding(
