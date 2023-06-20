@@ -273,58 +273,67 @@ class SearchResults extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 224, 45, 255),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text('Search Results'),
-      ),
-      body: Center(
-        child: ListView(
-          children: [
-            ListTile(
-              leading: SizedBox(
-                height: 100,
-                width: 100,
-                child: GestureDetector(
-                  child: Image.asset('assets/images/if_taeyeon.jpeg'),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/if');
-                  },
-                ),
-              ),
-              title:
-                  Text(searchText, style: const TextStyle(color: Colors.black)),
-              subtitle:
-                  const Text('Taeyeon', style: TextStyle(color: Colors.black)),
-              trailing: const Icon(Icons.play_arrow),
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context);
+              },
             ),
-            ListTile(
-              leading: SizedBox(
-                height: 100,
-                width: 100,
-                child: GestureDetector(
-                  child:
-                      Image.asset('assets/images/hospitalplaylistcover.jpeg'),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/hospitalplaylist');
-                  },
-                ),
-              ),
-              title:
-                  Text(searchText, style: const TextStyle(color: Colors.black)),
-              subtitle:
-                  const Text('Joy', style: TextStyle(color: Colors.black)),
-              trailing: const Icon(Icons.play_arrow),
-            ),
-          ],
-        ),
-      ),
-    );
+            title: const Text('Search Results'),
+            backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+          ),
+          body: Center(
+              child: ListView(
+            children: [
+              ListTile(
+                  leading: SizedBox(
+                      height: 100,
+                      width: 100,
+                      child: GestureDetector(
+                        child: Image.asset('assets/images/lovedive.jpg'),
+                        onTap: () {
+                          Navigator.pushNamed(context, '/if');
+                        },
+                      )),
+                  title:
+                      const Text('Love Dive', style: TextStyle(color: Colors.black)),
+                  subtitle: const Text('IVE',
+                      style: TextStyle(color: Colors.black)),
+                  trailing: GestureDetector(
+                    child: const Icon(Icons.play_arrow),
+                    onTap: () {
+                      launchUrl(Uri.parse(
+                          'https://youtu.be/Y8JFxS1HlDo'));
+                    },
+                  )),
+              ListTile(
+                  leading: SizedBox(
+                      height: 100,
+                      width: 100,
+                      child: GestureDetector(
+                        child: Image.asset(
+                            'assets/images/unforgiven.webq'),
+                        onTap: () {
+                          Navigator.pushNamed(context, '/imagp');
+                        },
+                      )),
+                  title: const Text('Unforgiven',
+                      style: TextStyle(color: Colors.black)),
+                  subtitle:
+                      const Text('LE SSERAFIM', style: TextStyle(color: Colors.black)),
+                  trailing: GestureDetector(
+                    child: const Icon(Icons.play_arrow),
+                    onTap: () {
+                      launchUrl(Uri.parse(
+                          'https://youtu.be/UBURTj20HXI'));
+                    },
+                  ))
+            ],
+          )),
+        ));
   }
 }
