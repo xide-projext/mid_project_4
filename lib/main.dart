@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/widgets.dart';
-import 'package:audioplayers/audioplayers.dart';
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
@@ -126,7 +125,6 @@ void main() {
         '/dramaost': (context) => const DramaOSTScreen(),
         '/foryou': (context) => const ForYouScreen(),
         '/form': (context) => const TextFormScreen(),
-        '/bluesky': (context) => const BlueSky(),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -315,7 +313,10 @@ class DramaOSTScreen extends StatelessWidget {
                         const Text('If', style: TextStyle(color: Colors.black)),
                     subtitle: const Text('Taeyeon',
                         style: TextStyle(color: Colors.black)),
-                    trailing: const Icon(Icons.play_arrow)),
+                    trailing: GestureDetector(child: const Icon(Icons.play_arrow),
+                    onTap: () {
+                      launchUrl(Uri.parse('https://www.youtube.com/watch?v=RjU5Op_KSBw'));
+                    },)),
                 ListTile(
                     leading: SizedBox(
                         height: 100,
@@ -326,7 +327,10 @@ class DramaOSTScreen extends StatelessWidget {
                         style: TextStyle(color: Colors.black)),
                     subtitle: const Text('Joy',
                         style: TextStyle(color: Colors.black)),
-                    trailing: const Icon(Icons.play_arrow))
+                    trailing: GestureDetector(child: const Icon(Icons.play_arrow),
+                    onTap: (){
+                      launchUrl(Uri.parse('https://www.youtube.com/watch?v=hoLzH1revMg'));
+                    },))
               ],
             )),
             bottomNavigationBar:
@@ -349,6 +353,13 @@ class ForYouScreen extends StatefulWidget{
 
 class _ForYouScreenState extends State<ForYouScreen> {
   List<dynamic> jsonData = [];
+  int _duration = 1;
+
+  void _incrementCounter(){
+    setState(() {
+      _duration = _duration + 1;
+    });
+  }
 
   @override
   void initState(){
@@ -378,7 +389,8 @@ class _ForYouScreenState extends State<ForYouScreen> {
                     final item = jsonData[index];
                     return ListTile(leading: SizedBox(height: 100, 
                     width: 100, 
-                    child: Image(image: AssetImage(item['albumcover']))),
+                    child: GestureDetector(onTap: () {_incrementCounter;}, 
+                      child: Image(image: AssetImage(item['albumcover'])))),
                     title: Text(item['title'],style: const TextStyle(color: Colors.black)),
                     subtitle: Text(item['artist'],style: const TextStyle(color: Colors.black)),
                     trailing: GestureDetector(child: const Icon(Icons.play_arrow),
@@ -396,146 +408,6 @@ class _ForYouScreenState extends State<ForYouScreen> {
               BottomNavigationBarItem(
                   icon: Icon(Icons.person), label: 'My Page')
             ])));
-  }
-}
-
-class BlueSky extends StatefulWidget {
-  const BlueSky({Key? key}) : super(key: key);
-
-  @override
-  _BlueSkyState createState() => _BlueSkyState();
-}
-
-class _BlueSkyState extends State<BlueSky> with SingleTickerProviderStateMixin {
-  final audioPlayer = AudioPlayer();
-  bool isPlaying = false;
-  late AnimationController _animationController;
-  Duration duration = Duration.zero;
-  Duration position = Duration.zero;
-
-  Future setAudio() async {
-    final player = AudioCache(prefix: 'musicfiles/');
-    final url = await player.load('bluesky_ikson.mp3');
-  }
-
-  @override
-  void dispose() {
-    audioPlayer.dispose();
-    _animationController.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    audioPlayer.onPlayerStateChanged.listen((state) {
-      setState(() {
-        isPlaying = state == PlayerState.playing;
-      });
-    });
-    audioPlayer.onDurationChanged.listen((newDuration) {
-      setState(() {
-        duration = newDuration;
-      });
-    });
-    audioPlayer.onPositionChanged.listen((newPosition) {
-      setState(() {
-        position = newPosition;
-      });
-    });
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(seconds: 5),
-    );
-  }
-
-  void togglePlayPause() async {
-    if (isPlaying) {
-      await audioPlayer.pause();
-      _animationController.stop();
-    } else {
-      await audioPlayer.resume();
-      _animationController.repeat();
-    }
-  setState(() {
-    isPlaying = !isPlaying;
-  });
-}
-
-
- String formatTime(Duration duration) {
-  if (duration.inMilliseconds <= 0) {
-    return '00:00';
-  }
-  String twoDigits(int n) => n.toString().padLeft(2, '0');
-  final minutes = twoDigits(duration.inMinutes.remainder(60));
-  final seconds = twoDigits(duration.inSeconds.remainder(60));
-
-  return '$minutes:$seconds';
-}
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Now Playing: Blue Sky'),
-        backgroundColor: const Color.fromARGB(255, 224, 45, 255),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            RotationTransition(
-              turns: _animationController,
-              child: const CircleAvatar(
-                backgroundImage: AssetImage('images/bluesky_ikson.jpeg'),
-                radius: 100,
-              ),
-            ),
-            const SizedBox(height: 32),
-            const Text(
-              'Blue Sky',
-              style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
-            ),
-            const SizedBox(height: 4),
-            const Text(
-              'Ikson',
-              style: TextStyle(fontSize: 20, color: Colors.black),
-            ),
-            Slider(min: 0,max: duration.inSeconds.toDouble(),value: position.inSeconds.toDouble(),
-              onChanged: (value) async {final position = Duration(seconds: value.toInt());
-              await audioPlayer.seek(position);
-              setState(() {this.position = position;});
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(formatTime(position),
-                      style: const TextStyle(color: Colors.black)),
-                  Text(formatTime(duration - position),
-                      style: const TextStyle(color: Colors.black)),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-            IconButton(
-              icon: Icon(
-                isPlaying ? Icons.pause : Icons.play_arrow,
-                size: 48,
-              ),
-              onPressed: togglePlayPause,
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
 
