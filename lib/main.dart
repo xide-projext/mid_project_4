@@ -83,8 +83,14 @@ class _MusicPlayerAppState extends State<MusicPlayerApp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Playlist'),
-        backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: const Text('Drama OSTs'),
+          backgroundColor: const Color.fromARGB(255, 224, 45, 255),
       ),
       body: Column(
         children: [
@@ -302,8 +308,14 @@ class DramaOSTScreen extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
             appBar: AppBar(
-              title: const Text('Drama OSTs'),
-              backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+              leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: const Text('Drama OSTs'),
+          backgroundColor: const Color.fromARGB(255, 224, 45, 255),
             ),
             body: Center(
                 child: ListView(
@@ -374,8 +386,14 @@ class _IfScreenState extends State<IfScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: const Color.fromARGB(255,224,45,255),
-      title: const Text('If Album Cover')),
+      appBar: AppBar(leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+          title: const Text('Drama OSTs'),
+          backgroundColor: const Color.fromARGB(255, 224, 45, 255),),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -409,8 +427,14 @@ class _ImagpScreenState extends State<ImagpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: const Color.fromARGB(255,224,45,255),
-      title: const Text('Introduce Me a Good Person Album Cover')),
+      appBar: AppBar(leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context); // Navigate back to the previous screen
+            },
+          ),
+          title: const Text('Drama OSTs'),
+          backgroundColor: const Color.fromARGB(255, 224, 45, 255),),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -452,8 +476,14 @@ class _ForYouScreenState extends State<ForYouScreen> {
         debugShowCheckedModeBanner: false,
         home: Scaffold(
             appBar: AppBar(
-              title: const Text('For You'),
-              backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+              leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context); // Navigate back to the previous screen
+            },
+          ),
+          title: const Text('Drama OSTs'),
+          backgroundColor: const Color.fromARGB(255, 224, 45, 255),
             ),
             body: Center(
                 child: ListView.builder(
@@ -572,7 +602,14 @@ class FirstProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Select something to add'),
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context); // Navigate back to the previous screen
+            },
+          ),
+          title: const Text('Drama OSTs'),
+          backgroundColor: const Color.fromARGB(255, 224, 45, 255),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -649,7 +686,14 @@ class _MusicProfileFormState extends State<MusicProfileForm> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Add your music'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context); // Navigate back to the previous screen
+            },
+          ),
+          title: const Text('Drama OSTs'),
+          backgroundColor: const Color.fromARGB(255, 224, 45, 255),
         ),
         body: Form(
           key: _formKey,
@@ -724,7 +768,14 @@ class _MvProfileFormState extends State<MvProfileForm> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Add a music video'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.pop(context); // Navigate back to the previous screen
+            },
+          ),
+          title: const Text('Drama OSTs'),
+          backgroundColor: const Color.fromARGB(255, 224, 45, 255),
         ),
         body: Form(
             key: _formKey,
