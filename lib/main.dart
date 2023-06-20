@@ -6,6 +6,8 @@ import 'package:flutter/widgets.dart';
 import 'dart:async';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
+import 'if_simplescaleanimation.dart';
+import 'imagp_simplescaleanimation.dart';
 
 class Music {
   String title;
@@ -125,6 +127,8 @@ void main() {
         '/dramaost': (context) => const DramaOSTScreen(),
         '/foryou': (context) => const ForYouScreen(),
         '/form': (context) => const TextFormScreen(),
+        '/if': (context) => const IfScreen(),
+        '/imagp': (context) => const ImagpScreen(),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -308,7 +312,10 @@ class DramaOSTScreen extends StatelessWidget {
                     leading: SizedBox(
                         height: 100,
                         width: 100,
-                        child: Image.asset('assets/images/if_taeyeon.jpeg')),
+                        child: GestureDetector(child:Image.asset('assets/images/if_taeyeon.jpeg'),
+                        onTap: () {
+                          Navigator.pushNamed(context, '/if');
+                        },)),
                     title:
                         const Text('If', style: TextStyle(color: Colors.black)),
                     subtitle: const Text('Taeyeon',
@@ -322,7 +329,10 @@ class DramaOSTScreen extends StatelessWidget {
                         height: 100,
                         width: 100,
                         child:
-                            Image.asset('assets/images/hospitalplaylistcover.jpeg')),
+                            GestureDetector(child: Image.asset('assets/images/hospitalplaylistcover.jpeg'),
+                            onTap: () {
+                              Navigator.pushNamed(context, '/imagp');
+                            },)),
                     title: const Text('Introduce Me a Good Person',
                         style: TextStyle(color: Colors.black)),
                     subtitle: const Text('Joy',
@@ -344,6 +354,76 @@ class DramaOSTScreen extends StatelessWidget {
   }
 }
 
+class IfScreen extends StatefulWidget{
+  const IfScreen({super.key});
+  @override
+  State<IfScreen> createState() => _IfScreenState();
+}
+
+class _IfScreenState extends State<IfScreen> {
+  int duration = 1;
+  GlobalKey<IfSimpleScaleAnimationState> globalKey = GlobalKey<IfSimpleScaleAnimationState>();
+
+  void _incrementCounter() {
+    setState(() {
+      duration = duration + 1;
+      globalKey.currentState?.changeScale();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(backgroundColor: const Color.fromARGB(255,224,45,255),
+      title: const Text('If Album Cover')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[IfSimpleScaleAnimation(key: globalKey,),],),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),),
+    );
+  }
+}
+
+class ImagpScreen extends StatefulWidget{
+  const ImagpScreen({super.key});
+  @override
+  _ImagpScreenState createState() => _ImagpScreenState();
+}
+
+class _ImagpScreenState extends State<ImagpScreen> {
+  int duration = 1;
+  GlobalKey<ImagpSimpleScaleAnimationState> globalKey = GlobalKey<ImagpSimpleScaleAnimationState>();
+
+  void _incrementCounter() {
+    setState(() {
+      duration = duration + 1;
+      globalKey.currentState?.changeScale();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(backgroundColor: const Color.fromARGB(255,224,45,255),
+      title: const Text('Introduce Me a Good Person Album Cover')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[ImagpSimpleScaleAnimation(key: globalKey,),],),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),),
+    );
+  }
+}
+
 class ForYouScreen extends StatefulWidget{
   const ForYouScreen({super.key});
 
@@ -353,13 +433,6 @@ class ForYouScreen extends StatefulWidget{
 
 class _ForYouScreenState extends State<ForYouScreen> {
   List<dynamic> jsonData = [];
-  int _duration = 1;
-
-  void _incrementCounter(){
-    setState(() {
-      _duration = _duration + 1;
-    });
-  }
 
   @override
   void initState(){
@@ -389,8 +462,7 @@ class _ForYouScreenState extends State<ForYouScreen> {
                     final item = jsonData[index];
                     return ListTile(leading: SizedBox(height: 100, 
                     width: 100, 
-                    child: GestureDetector(onTap: () {_incrementCounter;}, 
-                      child: Image(image: AssetImage(item['albumcover'])))),
+                    child: Image(image: AssetImage(item['albumcover']))),
                     title: Text(item['title'],style: const TextStyle(color: Colors.black)),
                     subtitle: Text(item['artist'],style: const TextStyle(color: Colors.black)),
                     trailing: GestureDetector(child: const Icon(Icons.play_arrow),
