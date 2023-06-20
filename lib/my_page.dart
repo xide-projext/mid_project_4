@@ -1,10 +1,31 @@
 import 'package:flutter/material.dart';
+import 'main.dart';
+import 'search.dart';
 
 void main() {
   runApp(MusicApp());
 }
 
-class MusicApp extends StatelessWidget {
+class MusicApp extends StatefulWidget {
+  @override
+  _MusicAppState createState() => _MusicAppState();
+}
+
+class _MusicAppState extends State<MusicApp> {
+  int _selectedIndex = 2;
+
+  static List<Widget> _widgetOptions = <Widget>[
+    MainScreen(),
+    SearchScreen(),
+    HomePage(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -12,12 +33,43 @@ class MusicApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomePage(),
+      home: Scaffold(
+        body: _widgetOptions.elementAt(_selectedIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'My Page'),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+        ),
+      ),
     );
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  var _selectIndex = 2;
+  // int currentIndex = 2;
+
+  var _pages = <Widget>[
+    MainScreen(),
+    SearchPage(),
+    HomePage(),
+  ];
+
+  void _onTapItem(int index) {
+    setState(() {
+      _selectIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,9 +100,7 @@ class HomePage extends StatelessWidget {
                     },
                   ),
                 ),
-                const SizedBox(
-                    height:
-                        90), // Add some spacing between the icon and the text
+                const SizedBox(height: 90),
                 const Text(
                   '홍길동',
                   style: TextStyle(
@@ -59,12 +109,16 @@ class HomePage extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const SizedBox(
-                    height:
-                        8), // Add some spacing between the text and the button
+                const SizedBox(height: 8),
                 FilledButton(
-                  onPressed: () {},
-                  style: FilledButton.styleFrom(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AccountEditPage()),
+                    );
+                  },
+                  style: ElevatedButton.styleFrom(
                     backgroundColor: const Color.fromARGB(160, 224, 45, 255),
                   ),
                   child: const Text('EDIT'),
@@ -82,7 +136,7 @@ class HomePage extends StatelessWidget {
                     child: const Align(
                       alignment: Alignment.topLeft,
                       child: Text(
-                        'Recentry Played',
+                        'Recently Played',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 30,
@@ -249,22 +303,28 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'My Page',
-          ),
-        ],
-      ),
+    );
+  }
+}
+
+class FilledButton extends StatelessWidget {
+  final VoidCallback onPressed;
+  final ButtonStyle? style;
+  final Widget? child;
+
+  const FilledButton({
+    Key? key,
+    required this.onPressed,
+    this.style,
+    this.child,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: style,
+      child: child,
     );
   }
 }
@@ -276,26 +336,13 @@ class KeyValue<T> {
   KeyValue(this.key, this.value);
 }
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '계정 편집',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: AccountEditPage(),
-    );
-  }
-}
-
 class AccountEditPage extends StatefulWidget {
   @override
   _AccountEditPageState createState() => _AccountEditPageState();
 }
 
 class _AccountEditPageState extends State<AccountEditPage> {
-  int currentIndex = 2;
+  // int currentIndex = 2;
 
   List<KeyValue<String>> fields = [
     KeyValue('Name', '홍길동'),
@@ -345,28 +392,6 @@ class _AccountEditPageState extends State<AccountEditPage> {
             ],
           );
         }).toList(),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-        },
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'My Page',
-          ),
-        ],
       ),
     );
   }

@@ -1,10 +1,42 @@
 import 'package:flutter/material.dart';
+import 'main.dart';
+import 'my_page.dart';
 
 void main() {
   runApp(SearchPage());
 }
 
-class SearchPage extends StatelessWidget {
+class SearchPage extends StatefulWidget {
+  @override
+  _SearchPageState createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
+  int _selectedIndex = 1;
+
+  static List<Widget> _widgetOptions = <Widget>[
+    MainScreen(),
+    SearchScreen(),
+    HomePage(),
+  ];
+
+  void _navigateToSearchList(String searchText) {
+    if (searchText.isNotEmpty) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SearchListScreen(searchText: searchText),
+        ),
+      );
+    }
+  }
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -12,15 +44,41 @@ class SearchPage extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      routes: {
-        '/': (context) => SearchScreen(),
-        '/searchList': (context) => SearchListScreen(),
-      },
+      home: Scaffold(
+        body: _widgetOptions.elementAt(_selectedIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'My Page'),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+        ),
+      ),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Home'),
+      ),
+      body: const Center(
+        child: Text('Home Screen'),
+      ),
     );
   }
 }
 
 class SearchScreen extends StatefulWidget {
+  final int initialIndex;
+
+  SearchScreen({this.initialIndex = 1});
+
   @override
   _SearchScreenState createState() => _SearchScreenState();
 }
@@ -75,6 +133,11 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
+  void _onSearchButtonPressed() {
+    final String searchText = _searchController.text;
+    _navigateToSearchList(searchText);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -115,27 +178,29 @@ class _SearchScreenState extends State<SearchScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'My Page',
-          ),
-        ],
+    );
+  }
+}
+
+class MyPageScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('My Page'),
+      ),
+      body: const Center(
+        child: Text('My Page Screen'),
       ),
     );
   }
 }
 
 class SearchListScreen extends StatelessWidget {
+  final String searchText;
+
+  SearchListScreen({required this.searchText});
+
   @override
   Widget build(BuildContext context) {
     final String searchText = ModalRoute.of(context)!.settings.arguments as String;

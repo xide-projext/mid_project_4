@@ -8,6 +8,59 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
 import 'if_simplescaleanimation.dart';
 import 'imagp_simplescaleanimation.dart';
+import 'search.dart';
+import 'my_page.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  int _selectedIndex = 0;
+
+  static List<Widget> _widgetOptions = <Widget>[
+    MainScreen(),
+    SearchScreen(),
+    HomePage(),
+  ];
+
+  
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Music App',
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      home: Scaffold(
+        body: _widgetOptions.elementAt(_selectedIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'My Page'),
+          ],
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+        ),
+      ),
+    );
+  }
+}
 
 class Music {
   String title;
@@ -122,7 +175,7 @@ class _MusicPlayerAppState extends State<MusicPlayerApp> {
   }
 }
 
-void main() {
+void main2() {
   runApp(
     MaterialApp(
       title: 'MusiQ',
@@ -154,6 +207,15 @@ class MainScreen extends StatefulWidget {
 
 class MainScreenState extends State<MainScreen> {
   final List<String> entries = <String>['A', 'B', 'C'];
+
+  var _selectedIndex = 0;
+
+  void _onTapItem(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -214,7 +276,7 @@ class MainScreenState extends State<MainScreen> {
               margin: const EdgeInsets.only(top: 25, left: 15),
               child: Row(
                 children: [
-                  const Column(children: [
+                  Column(children: const [
                     Text('For You',
                         style: TextStyle(
                             color: Colors.black,
