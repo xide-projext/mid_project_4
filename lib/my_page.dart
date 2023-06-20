@@ -89,16 +89,19 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Center(
-                  child: IconButton(
-                    icon: const Icon(
-                      Icons.account_circle,
-                      size: 120,
-                      color: Color.fromARGB(255, 224, 45, 255),
-                    ),
-                    onPressed: () {
-                    },
-                  ),
-                ),
+  child: Container(
+    alignment: Alignment.center,
+    child: IconButton(
+      icon: const Icon(
+        Icons.account_circle,
+        size: 120,
+        color: Color.fromARGB(255, 224, 45, 255),
+      ),
+      onPressed: () {},
+    ),
+  ),
+),
+
                 
                 const SizedBox(height: 90),
                 const Text(
