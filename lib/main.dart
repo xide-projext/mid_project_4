@@ -31,8 +31,6 @@ class _MyAppState extends State<MyApp> {
     HomePage(),
   ];
 
-  
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -137,13 +135,13 @@ class _MusicPlayerAppState extends State<MusicPlayerApp> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          title: const Text('Drama OSTs'),
-          backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: const Text('Drama OSTs'),
+        backgroundColor: const Color.fromARGB(255, 224, 45, 255),
       ),
       body: Column(
         children: [
@@ -219,145 +217,141 @@ class MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('MusiQ'),
-          backgroundColor: const Color.fromARGB(255, 224, 45, 255),
-        ),
-        body: ListView(children: <Widget>[
-          Container(
-            margin: const EdgeInsets.only(top: 60, left: 15),
-            child: const Align(
-              alignment: Alignment.topLeft,
-              child: Text(
-                'Your Playlists',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 30,
-                    fontWeight: FontWeight.w700),
-              ),
+      appBar: AppBar(
+        title: const Text('MusiQ'),
+        backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+      ),
+      body: ListView(children: <Widget>[
+        Container(
+          margin: const EdgeInsets.only(top: 60, left: 15),
+          child: const Align(
+            alignment: Alignment.topLeft,
+            child: Text(
+              'Your Playlists',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 30,
+                  fontWeight: FontWeight.w700),
             ),
           ),
-          Container(
-              margin: const EdgeInsets.only(top: 15, left: 15),
-              child: Row(children: [
-                Column(children: [
-                  GestureDetector(
-                    child: Image.network(
-                        'https://my-k-toon.web.app/webtoon/1.png',
-                        height: 150,
-                        width: 150),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/dramaost');
-                    },
-                  ),
-                  const Text('Drama OSTs',
-                      style: TextStyle(color: Colors.black)),
-                ]),
-                const SizedBox(width: 30),
-                Column(
-                    //mainAxisAlignment: MainAxisAlignment.center,
-                    //crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      GestureDetector(
-                        child: Image.network(
-                            'https://my-k-toon.web.app/webtoon/2.png',
-                            height: 150,
-                            width: 150),
-                        onTap: () {
-                          Navigator.pushNamed(context, '/musicplayer');
-                        },
-                      ),
-                      const Text('BFF Hours',
-                          style: TextStyle(color: Colors.black))
-                    ]),
-                const SizedBox(width: 30),
-              ])),
-          Container(
-              margin: const EdgeInsets.only(top: 25, left: 15),
-              child: Row(
-                children: [
-                  Column(children: const [
-                    Text('For You',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 30,
-                            fontWeight: FontWeight.w700))
+        ),
+        Container(
+            margin: const EdgeInsets.only(top: 15, left: 15),
+            child: Row(children: [
+              Column(children: [
+                GestureDetector(
+                  child: Image.network(
+                      'https://my-k-toon.web.app/webtoon/1.png',
+                      height: 150,
+                      width: 150),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/dramaost');
+                  },
+                ),
+                const Text('Drama OSTs', style: TextStyle(color: Colors.black)),
+              ]),
+              const SizedBox(width: 30),
+              Column(
+                  //mainAxisAlignment: MainAxisAlignment.center,
+                  //crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      child: Image.network(
+                          'https://my-k-toon.web.app/webtoon/2.png',
+                          height: 150,
+                          width: 150),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/musicplayer');
+                      },
+                    ),
+                    const Text('BFF Hours',
+                        style: TextStyle(color: Colors.black))
                   ]),
-                  const SizedBox(width: 20),
-                  Column(
-                    children: [
-                      GestureDetector(
-                        child: const Text('Press to See More',
-                            style:
-                                TextStyle(color: Colors.purple, fontSize: 15)),
-                        onTap: () {
-                          Navigator.pushNamed(context, '/foryou');
-                        },
-                      )
-                    ],
-                  )
-                ],
-              )),
-          SizedBox(
-              height: 200.0,
-              width: 200.0,
-              child:
-                  ListView(scrollDirection: Axis.horizontal, children: <Widget>[
-                Container(
-                    width: 150,
-                    height: 150,
-                    decoration: const BoxDecoration(
-                        image: DecorationImage(
-                            image: AssetImage('assets/images/bluesky_ikson.jpeg')))),
-                const SizedBox(width: 30),
-                Container(
-                  width: 150,
-                  height: 150,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/callmemaybe.jpeg'))),
-                ),
-                const SizedBox(width: 30),
-                Container(
-                  width: 150,
-                  height: 150,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/Wannabe.jpg'))),
-                ),
-                const SizedBox(width: 30),
-                Container(
+              const SizedBox(width: 30),
+            ])),
+        Container(
+            margin: const EdgeInsets.only(top: 25, left: 15),
+            child: Row(
+              children: [
+                Column(children: const [
+                  Text('For You',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 30,
+                          fontWeight: FontWeight.w700))
+                ]),
+                const SizedBox(width: 20),
+                Column(
+                  children: [
+                    GestureDetector(
+                      child: const Text('Press to See More',
+                          style: TextStyle(color: Colors.purple, fontSize: 15)),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/foryou');
+                      },
+                    )
+                  ],
+                )
+              ],
+            )),
+        SizedBox(
+            height: 200.0,
+            width: 200.0,
+            child:
+                ListView(scrollDirection: Axis.horizontal, children: <Widget>[
+              Container(
                   width: 150,
                   height: 150,
                   decoration: const BoxDecoration(
                       image: DecorationImage(
                           image:
-                              AssetImage('assets/images/hospitalplaylistcover.jpeg'))),
-                ),
-                const SizedBox(width: 30),
-                Container(
-                  width: 150,
-                  height: 150,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/Party_in_the_USA.jpg'))),
-                ),
-                const SizedBox(width: 30),
-                Container(
-                  width: 150,
-                  height: 150,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/Snsd_itnw_cover.png'))),
-                ),
-              ]))
-        ]),
-        bottomNavigationBar:
-            BottomNavigationBar(items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'My Page')
-        ]));
+                              AssetImage('assets/images/bluesky_ikson.jpeg')))),
+              const SizedBox(width: 30),
+              Container(
+                width: 150,
+                height: 150,
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/callmemaybe.jpeg'))),
+              ),
+              const SizedBox(width: 30),
+              Container(
+                width: 150,
+                height: 150,
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('assets/images/Wannabe.jpg'))),
+              ),
+              const SizedBox(width: 30),
+              Container(
+                width: 150,
+                height: 150,
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(
+                            'assets/images/hospitalplaylistcover.jpeg'))),
+              ),
+              const SizedBox(width: 30),
+              Container(
+                width: 150,
+                height: 150,
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image:
+                            AssetImage('assets/images/Party_in_the_USA.jpg'))),
+              ),
+              const SizedBox(width: 30),
+              Container(
+                width: 150,
+                height: 150,
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image:
+                            AssetImage('assets/images/Snsd_itnw_cover.png'))),
+              ),
+            ]))
+      ]),
+    );
   }
 }
 
@@ -371,13 +365,13 @@ class DramaOSTScreen extends StatelessWidget {
         home: Scaffold(
             appBar: AppBar(
               leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          title: const Text('Drama OSTs'),
-          backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              title: const Text('Drama OSTs'),
+              backgroundColor: const Color.fromARGB(255, 224, 45, 255),
             ),
             body: Center(
                 child: ListView(
@@ -386,35 +380,45 @@ class DramaOSTScreen extends StatelessWidget {
                     leading: SizedBox(
                         height: 100,
                         width: 100,
-                        child: GestureDetector(child:Image.asset('assets/images/if_taeyeon.jpeg'),
-                        onTap: () {
-                          Navigator.pushNamed(context, '/if');
-                        },)),
+                        child: GestureDetector(
+                          child: Image.asset('assets/images/if_taeyeon.jpeg'),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/if');
+                          },
+                        )),
                     title:
                         const Text('If', style: TextStyle(color: Colors.black)),
                     subtitle: const Text('Taeyeon',
                         style: TextStyle(color: Colors.black)),
-                    trailing: GestureDetector(child: const Icon(Icons.play_arrow),
-                    onTap: () {
-                      launchUrl(Uri.parse('https://www.youtube.com/watch?v=RjU5Op_KSBw'));
-                    },)),
+                    trailing: GestureDetector(
+                      child: const Icon(Icons.play_arrow),
+                      onTap: () {
+                        launchUrl(Uri.parse(
+                            'https://www.youtube.com/watch?v=RjU5Op_KSBw'));
+                      },
+                    )),
                 ListTile(
                     leading: SizedBox(
                         height: 100,
                         width: 100,
-                        child:
-                            GestureDetector(child: Image.asset('assets/images/hospitalplaylistcover.jpeg'),
-                            onTap: () {
-                              Navigator.pushNamed(context, '/imagp');
-                            },)),
+                        child: GestureDetector(
+                          child: Image.asset(
+                              'assets/images/hospitalplaylistcover.jpeg'),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/imagp');
+                          },
+                        )),
                     title: const Text('Introduce Me a Good Person',
                         style: TextStyle(color: Colors.black)),
                     subtitle: const Text('Joy',
                         style: TextStyle(color: Colors.black)),
-                    trailing: GestureDetector(child: const Icon(Icons.play_arrow),
-                    onTap: (){
-                      launchUrl(Uri.parse('https://www.youtube.com/watch?v=hoLzH1revMg'));
-                    },))
+                    trailing: GestureDetector(
+                      child: const Icon(Icons.play_arrow),
+                      onTap: () {
+                        launchUrl(Uri.parse(
+                            'https://www.youtube.com/watch?v=hoLzH1revMg'));
+                      },
+                    ))
               ],
             )),
             bottomNavigationBar:
@@ -428,7 +432,7 @@ class DramaOSTScreen extends StatelessWidget {
   }
 }
 
-class IfScreen extends StatefulWidget{
+class IfScreen extends StatefulWidget {
   const IfScreen({super.key});
   @override
   State<IfScreen> createState() => _IfScreenState();
@@ -436,7 +440,8 @@ class IfScreen extends StatefulWidget{
 
 class _IfScreenState extends State<IfScreen> {
   int duration = 1;
-  GlobalKey<IfSimpleScaleAnimationState> globalKey = GlobalKey<IfSimpleScaleAnimationState>();
+  GlobalKey<IfSimpleScaleAnimationState> globalKey =
+      GlobalKey<IfSimpleScaleAnimationState>();
 
   void _incrementCounter() {
     setState(() {
@@ -448,28 +453,36 @@ class _IfScreenState extends State<IfScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          title: const Text('Drama OSTs'),
-          backgroundColor: const Color.fromARGB(255, 224, 45, 255),),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: const Text('Drama OSTs'),
+        backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[IfSimpleScaleAnimation(key: globalKey,),],),
+          children: <Widget>[
+            IfSimpleScaleAnimation(
+              key: globalKey,
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: const Icon(Icons.add),),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
 
-class ImagpScreen extends StatefulWidget{
+class ImagpScreen extends StatefulWidget {
   const ImagpScreen({super.key});
   @override
   _ImagpScreenState createState() => _ImagpScreenState();
@@ -477,7 +490,8 @@ class ImagpScreen extends StatefulWidget{
 
 class _ImagpScreenState extends State<ImagpScreen> {
   int duration = 1;
-  GlobalKey<ImagpSimpleScaleAnimationState> globalKey = GlobalKey<ImagpSimpleScaleAnimationState>();
+  GlobalKey<ImagpSimpleScaleAnimationState> globalKey =
+      GlobalKey<ImagpSimpleScaleAnimationState>();
 
   void _incrementCounter() {
     setState(() {
@@ -489,28 +503,36 @@ class _ImagpScreenState extends State<ImagpScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context); // Navigate back to the previous screen
-            },
-          ),
-          title: const Text('Drama OSTs'),
-          backgroundColor: const Color.fromARGB(255, 224, 45, 255),),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous screen
+          },
+        ),
+        title: const Text('Drama OSTs'),
+        backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[ImagpSimpleScaleAnimation(key: globalKey,),],),
+          children: <Widget>[
+            ImagpSimpleScaleAnimation(
+              key: globalKey,
+            ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: const Icon(Icons.add),),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
 
-class ForYouScreen extends StatefulWidget{
+class ForYouScreen extends StatefulWidget {
   const ForYouScreen({super.key});
 
   @override
@@ -521,14 +543,15 @@ class _ForYouScreenState extends State<ForYouScreen> {
   List<dynamic> jsonData = [];
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
     loadJsonData();
   }
 
   void loadJsonData() async {
     String jsonString = await rootBundle.loadString('assets/db.json');
-    setState(() { jsonData = jsonDecode(jsonString)['music'];
+    setState(() {
+      jsonData = jsonDecode(jsonString)['music'];
     });
   }
 
@@ -537,41 +560,39 @@ class _ForYouScreenState extends State<ForYouScreen> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context); // Navigate back to the previous screen
-            },
-          ),
-          title: const Text('Drama OSTs'),
-          backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+          appBar: AppBar(
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back),
+              onPressed: () {
+                Navigator.pop(context); // Navigate back to the previous screen
+              },
             ),
-            body: Center(
-                child: ListView.builder(
+            title: const Text('Drama OSTs'),
+            backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+          ),
+          body: Center(
+              child: ListView.builder(
                   itemCount: jsonData.length,
                   itemBuilder: (context, index) {
                     final item = jsonData[index];
-                    return ListTile(leading: SizedBox(height: 100, 
-                    width: 100, 
-                    child: Image(image: AssetImage(item['albumcover']))),
-                    title: Text(item['title'],style: const TextStyle(color: Colors.black)),
-                    subtitle: Text(item['artist'],style: const TextStyle(color: Colors.black)),
-                    trailing: GestureDetector(child: const Icon(Icons.play_arrow),
-                    onTap: () {
-                      launchUrl(Uri.parse(item['url']));
-                    },)
-                    );
-                  }
-            )),
-            bottomNavigationBar:
-                BottomNavigationBar(items: const <BottomNavigationBarItem>[
-              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.search), label: 'Search'),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.person), label: 'My Page')
-            ])));
+                    return ListTile(
+                        leading: SizedBox(
+                            height: 100,
+                            width: 100,
+                            child:
+                                Image(image: AssetImage(item['albumcover']))),
+                        title: Text(item['title'],
+                            style: const TextStyle(color: Colors.black)),
+                        subtitle: Text(item['artist'],
+                            style: const TextStyle(color: Colors.black)),
+                        trailing: GestureDetector(
+                          child: const Icon(Icons.play_arrow),
+                          onTap: () {
+                            launchUrl(Uri.parse(item['url']));
+                          },
+                        ));
+                  })),
+        ));
   }
 }
 
@@ -665,13 +686,13 @@ class FirstProfilePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context); // Navigate back to the previous screen
-            },
-          ),
-          title: const Text('Drama OSTs'),
-          backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous screen
+          },
+        ),
+        title: const Text('Drama OSTs'),
+        backgroundColor: const Color.fromARGB(255, 224, 45, 255),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
