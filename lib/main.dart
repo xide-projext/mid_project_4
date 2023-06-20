@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:js';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter/widgets.dart';
@@ -10,6 +11,8 @@ import 'if_simplescaleanimation.dart';
 import 'imagp_simplescaleanimation.dart';
 import 'search.dart';
 import 'my_page.dart';
+import 'nggyu_simplescaleanimation.dart';
+import 'goodtime_simplescaleanimation.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,7 +29,7 @@ class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
 
   static List<Widget> _widgetOptions = <Widget>[
-    MainScreen(),
+    const MainScreen(),
     SearchScreen(),
     HomePage(),
   ];
@@ -60,119 +63,6 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
-class Music {
-  String title;
-  String artist;
-  int duration;
-
-  Music({required this.title, required this.artist, required this.duration});
-
-  factory Music.fromJson(Map<String, dynamic> json) {
-    return Music(
-      title: json['title'],
-      artist: json['artist'],
-      duration: json['duration'],
-    );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      'title': title,
-      'artist': artist,
-      'duration': duration,
-    };
-  }
-}
-
-class MusicPlayerApp extends StatefulWidget {
-  const MusicPlayerApp({super.key});
-
-  @override
-  _MusicPlayerAppState createState() => _MusicPlayerAppState();
-}
-
-class _MusicPlayerAppState extends State<MusicPlayerApp> {
-  List<Music> playlist = [];
-
-  @override
-  void initState() {
-    super.initState();
-    readInstance();
-  }
-
-  void readInstance() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? playlistJson = prefs.getString('playlist');
-    if (playlistJson != null) {
-      List<dynamic> playlistData = jsonDecode(playlistJson);
-      setState(() {
-        playlist = playlistData.map((item) => Music.fromJson(item)).toList();
-      });
-    }
-  }
-
-  void saveInstance() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String playlistJson =
-        jsonEncode(playlist.map((music) => music.toJson()).toList());
-    prefs.setString('playlist', playlistJson);
-  }
-
-  void addMusicToPlaylist() {
-    Music music = Music(
-      title: 'Song Title',
-      artist: 'Artist Name',
-      duration: 210,
-    );
-    setState(() {
-      playlist.add(music);
-    });
-    saveInstance();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: const Text('Drama OSTs'),
-        backgroundColor: const Color.fromARGB(255, 224, 45, 255),
-      ),
-      body: Column(
-        children: [
-          Row(children: [
-            ElevatedButton(
-              onPressed: addMusicToPlaylist,
-              child: const Text('Add Music to Playlist'),
-            ),
-            ElevatedButton(
-                child: const Text('Add Manually'),
-                onPressed: () => Navigator.pushNamed(context, '/form'))
-          ]),
-          Expanded(
-            child: ListView.builder(
-              itemCount: playlist.length,
-              itemBuilder: (context, index) {
-                Music music = playlist[index];
-                return ListTile(
-                  title: Text(music.title),
-                  subtitle: Text(music.artist),
-                  trailing: Text('${music.duration} sec'),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
 void main2() {
   runApp(
     MaterialApp(
@@ -180,12 +70,12 @@ void main2() {
       initialRoute: '/',
       routes: {
         '/': (context) => const MainScreen(),
-        '/musicplayer': (context) => const MusicPlayerApp(),
+        '/bffhours': (context) => const BFFHoursScreen(),
         '/dramaost': (context) => const DramaOSTScreen(),
         '/foryou': (context) => const ForYouScreen(),
-        '/form': (context) => const TextFormScreen(),
         '/if': (context) => const IfScreen(),
         '/imagp': (context) => const ImagpScreen(),
+        '/nggyu': (context) => const NggyuScreen(),
       },
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch().copyWith(
@@ -261,7 +151,7 @@ class MainScreenState extends State<MainScreen> {
                           height: 150,
                           width: 150),
                       onTap: () {
-                        Navigator.pushNamed(context, '/musicplayer');
+                        Navigator.pushNamed(context, '/bffhours');
                       },
                     ),
                     const Text('BFF Hours',
@@ -273,14 +163,14 @@ class MainScreenState extends State<MainScreen> {
             margin: const EdgeInsets.only(top: 25, left: 15),
             child: Row(
               children: [
-                Column(children: const [
+                const Column(children: [
                   Text('For You',
                       style: TextStyle(
                           color: Colors.black,
                           fontSize: 30,
                           fontWeight: FontWeight.w700))
                 ]),
-                const SizedBox(width: 20),
+                const SizedBox(width: 30),
                 Column(
                   children: [
                     GestureDetector(
@@ -460,7 +350,7 @@ class _IfScreenState extends State<IfScreen> {
             Navigator.pop(context);
           },
         ),
-        title: const Text('Drama OSTs'),
+        title: const Text('If Album Cover'),
         backgroundColor: const Color.fromARGB(255, 224, 45, 255),
       ),
       body: Center(
@@ -510,7 +400,7 @@ class _ImagpScreenState extends State<ImagpScreen> {
             Navigator.pop(context); // Navigate back to the previous screen
           },
         ),
-        title: const Text('Drama OSTs'),
+        title: const Text('Introduce Me a Good Person Album Cover'),
         backgroundColor: const Color.fromARGB(255, 224, 45, 255),
       ),
       body: Center(
@@ -518,6 +408,183 @@ class _ImagpScreenState extends State<ImagpScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ImagpSimpleScaleAnimation(
+              key: globalKey,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class BFFHoursScreen extends StatelessWidget {
+ const BFFHoursScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
+              title: const Text('BFF Hours'),
+              backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+            ),
+            body: Center(
+                child: ListView(
+              children: [
+                ListTile(
+                    leading: SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: GestureDetector(
+                          child: Image.asset('assets/images/nggyu.jpeg'),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/nggyu');
+                          },
+                        )),
+                    title:
+                        const Text('Never Gonna Give You Up', style: TextStyle(color: Colors.black)),
+                    subtitle: const Text('Rick Astley',
+                        style: TextStyle(color: Colors.black)),
+                    trailing: GestureDetector(
+                      child: const Icon(Icons.play_arrow),
+                      onTap: () {
+                        launchUrl(Uri.parse(
+                            'https://www.youtube.com/watch?v=dQw4w9WgXcQ'));
+                      },
+                    )),
+                ListTile(
+                    leading: SizedBox(
+                        height: 100,
+                        width: 100,
+                        child: GestureDetector(
+                          child: Image.asset(
+                              'assets/images/callmemaybe.jpeg'),
+                          onTap: () {
+                            Navigator.pushNamed(context, '/imagp');
+                          },
+                        )),
+                    title: const Text('Good Time',
+                        style: TextStyle(color: Colors.black)),
+                    subtitle: const Text('Owl City and Carly Rae Jepsen',
+                        style: TextStyle(color: Colors.black)),
+                    trailing: GestureDetector(
+                      child: const Icon(Icons.play_arrow),
+                      onTap: () {
+                        launchUrl(Uri.parse(
+                            'https://www.youtube.com/watch?v=H7HmzwI67ec'));
+                      },
+                    ))
+              ],
+            )),
+            bottomNavigationBar:
+                BottomNavigationBar(items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.search), label: 'Search'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.person), label: 'My Page')
+            ])));
+  }
+}
+
+class NggyuScreen extends StatefulWidget {
+  const NggyuScreen({super.key});
+  @override
+  _NggyuScreenState createState() => _NggyuScreenState();
+}
+
+class _NggyuScreenState extends State<NggyuScreen> {
+  int duration = 1;
+  GlobalKey<NggyuSimpleScaleAnimationState> globalKey =
+      GlobalKey<NggyuSimpleScaleAnimationState>();
+
+  void _incrementCounter() {
+    setState(() {
+      duration = duration + 1;
+      globalKey.currentState?.changeScale();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous screen
+          },
+        ),
+        title: const Text('Never Gonna Give You Up Album Cover'),
+        backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            NggyuSimpleScaleAnimation(
+              key: globalKey,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: const Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+class GtScreen extends StatefulWidget {
+  const GtScreen({super.key});
+  @override
+  _GtScreenState createState() => _GtScreenState();
+}
+
+class _GtScreenState extends State<GtScreen> {
+  int duration = 1;
+  GlobalKey<GtSimpleScaleAnimationState> globalKey =
+      GlobalKey<GtSimpleScaleAnimationState>();
+
+  void _incrementCounter() {
+    setState(() {
+      duration = duration + 1;
+      globalKey.currentState?.changeScale();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Navigate back to the previous screen
+          },
+        ),
+        title: const Text('Good Time Album Cover'),
+        backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            GtSimpleScaleAnimation(
               key: globalKey,
             ),
           ],
@@ -593,333 +660,5 @@ class _ForYouScreenState extends State<ForYouScreen> {
                         ));
                   })),
         ));
-  }
-}
-
-class TextFormScreen extends StatefulWidget {
-  const TextFormScreen({Key? key}) : super(key: key);
-  @override
-  State<TextFormScreen> createState() => _TextFormScreenState();
-}
-
-class _TextFormScreenState extends State<TextFormScreen> {
-  final musicProfile = MusicProfile(name: '', artist: '');
-  final mvProfile = MvProfile(name: '', artist: '', url: '');
-
-  void updateMusicProfile(MusicProfile profile) {
-    setState(() {
-      musicProfile.name = profile.name;
-      musicProfile.artist = profile.artist;
-    });
-  }
-
-  void updateMvProfile(MvProfile profile) {
-    setState(() {
-      mvProfile.name = profile.name;
-      mvProfile.artist = profile.artist;
-      mvProfile.url = profile.url;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Form App',
-      theme: ThemeData(
-        primarySwatch: Colors.purple,
-      ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => FirstProfilePage(
-              musicProfile: musicProfile,
-              mvProfile: mvProfile,
-            ),
-        '/musicProfileForm': (context) => MusicProfileForm(
-              userProfile: musicProfile,
-              updateProfile: updateMusicProfile,
-            ),
-        '/mvProfileForm': (context) => MvProfileForm(
-              userProfile: mvProfile,
-              updateProfile: updateMvProfile,
-            ),
-      },
-    );
-  }
-}
-
-class UserProfile {
-  String name;
-  String artist;
-
-  UserProfile({required this.name, required this.artist});
-}
-
-class MusicProfile extends UserProfile {
-  MusicProfile({
-    required String name,
-    required String artist,
-  }) : super(name: name, artist: artist);
-}
-
-class MvProfile extends UserProfile {
-  String url;
-
-  MvProfile({
-    required String name,
-    required String artist,
-    required this.url,
-  }) : super(name: name, artist: artist);
-}
-
-class FirstProfilePage extends StatelessWidget {
-  final MusicProfile musicProfile;
-  final MvProfile mvProfile;
-
-  const FirstProfilePage({
-    super.key,
-    required this.musicProfile,
-    required this.mvProfile,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context); // Navigate back to the previous screen
-          },
-        ),
-        title: const Text('Drama OSTs'),
-        backgroundColor: const Color.fromARGB(255, 224, 45, 255),
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/musicProfileForm');
-                },
-                child: const Text('Add Music'),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, '/mvProfileForm');
-                },
-                child: const Text('Add Music Video'),
-              ),
-            ],
-          ),
-          if (musicProfile.name.isNotEmpty)
-            Card(
-              child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text('Add your music:'),
-                      Text('Name: ${musicProfile.name}'),
-                      Text('Artist: ${musicProfile.artist}'),
-                    ],
-                  )),
-            ),
-          if (mvProfile.name.isNotEmpty)
-            Card(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text('Add your music video:'),
-                    Text('Name: ${mvProfile.name}'),
-                    Text('Artist: ${mvProfile.artist}'),
-                    Text('URL: ${mvProfile.url}'),
-                  ],
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class MusicProfileForm extends StatefulWidget {
-  final UserProfile userProfile;
-  final Function(MusicProfile) updateProfile;
-
-  const MusicProfileForm({
-    Key? key,
-    required this.userProfile,
-    required this.updateProfile,
-  }) : super(key: key);
-
-  @override
-  _MusicProfileFormState createState() => _MusicProfileFormState();
-}
-
-class _MusicProfileFormState extends State<MusicProfileForm> {
-  final _formKey = GlobalKey<FormState>();
-  final _musicProfile = MusicProfile(name: '', artist: '');
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context); // Navigate back to the previous screen
-            },
-          ),
-          title: const Text('Drama OSTs'),
-          backgroundColor: const Color.fromARGB(255, 224, 45, 255),
-        ),
-        body: Form(
-          key: _formKey,
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Name'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the song title';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  setState(() {
-                    _musicProfile.name = value!;
-                  });
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(labelText: 'Artist'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter the name of the artist';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  setState(() {
-                    _musicProfile.artist = value!;
-                  });
-                },
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _formKey.currentState!.save();
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text('Processing Data'),
-                    ));
-                    widget.updateProfile(_musicProfile);
-                    Navigator.pop(context);
-                  }
-                },
-                child: const Text('Add Music'),
-              )
-            ],
-          ),
-        ));
-  }
-}
-
-class MvProfileForm extends StatefulWidget {
-  final UserProfile userProfile;
-  final Function(MvProfile) updateProfile;
-
-  const MvProfileForm({
-    Key? key,
-    required this.userProfile,
-    required this.updateProfile,
-  }) : super(key: key);
-
-  @override
-  _MvProfileFormState createState() => _MvProfileFormState();
-}
-
-class _MvProfileFormState extends State<MvProfileForm> {
-  final _formKey = GlobalKey<FormState>();
-  final _mvProfile = MvProfile(name: '', artist: '', url: '');
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context); // Navigate back to the previous screen
-            },
-          ),
-          title: const Text('Drama OSTs'),
-          backgroundColor: const Color.fromARGB(255, 224, 45, 255),
-        ),
-        body: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Name'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the name of the music video';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    setState(() {
-                      _mvProfile.name = value!;
-                    });
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'Artist'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter the name of the artist';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    setState(() {
-                      _mvProfile.artist = value!;
-                    });
-                  },
-                ),
-                TextFormField(
-                  decoration: const InputDecoration(labelText: 'URL'),
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Pleasee enter the URL';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) {
-                    setState(() {
-                      _mvProfile.url = value!;
-                    });
-                  },
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('Processing Data')),
-                      );
-                      widget.updateProfile(_mvProfile);
-                      Navigator.pop(context);
-                    }
-                  },
-                  child: const Text('Add Music Video'),
-                )
-              ],
-            )));
   }
 }
