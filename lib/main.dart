@@ -8,6 +8,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/services.dart';
 import 'if_simplescaleanimation.dart';
 import 'imagp_simplescaleanimation.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 
 class Music {
   String title;
