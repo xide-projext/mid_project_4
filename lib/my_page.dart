@@ -96,10 +96,10 @@ class _HomePageState extends State<HomePage> {
                       color: Color.fromARGB(255, 224, 45, 255),
                     ),
                     onPressed: () {
-                      // 계정 아이콘을 눌렀을 때 수행할 동작
                     },
                   ),
                 ),
+                
                 const SizedBox(height: 90),
                 const Text(
                   '홍길동',
@@ -197,7 +197,7 @@ class _HomePageState extends State<HomePage> {
                     child: Row(
                       children: [
                         Column(
-                          children: [
+                          children: const [
                             Text(
                               'Shared Playlist',
                               style: TextStyle(
@@ -209,22 +209,6 @@ class _HomePageState extends State<HomePage> {
                           ],
                         ),
                         const SizedBox(width: 20),
-                        Column(
-                          children: [
-                            GestureDetector(
-                              child: const Text(
-                                'Press to See More',
-                                style: TextStyle(
-                                  color: Colors.purple,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              onTap: () {
-                                Navigator.pushNamed(context, '/foryou');
-                              },
-                            ),
-                          ],
-                        ),
                       ],
                     ),
                   ),
@@ -239,7 +223,7 @@ class _HomePageState extends State<HomePage> {
                           height: 150,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage('images/bluesky_ikson.jpeg'),
+                              image: AssetImage('images/happen.jpeg'),
                             ),
                           ),
                         ),
@@ -249,7 +233,7 @@ class _HomePageState extends State<HomePage> {
                           height: 150,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage('images/callmemaybe.jpeg'),
+                              image: AssetImage('images/jannabi.jpeg'),
                             ),
                           ),
                         ),
@@ -259,7 +243,7 @@ class _HomePageState extends State<HomePage> {
                           height: 150,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage('images/Wannabe.jpg'),
+                              image: AssetImage('images/mamamoo.jpg'),
                             ),
                           ),
                         ),
@@ -280,17 +264,7 @@ class _HomePageState extends State<HomePage> {
                           height: 150,
                           decoration: const BoxDecoration(
                             image: DecorationImage(
-                              image: AssetImage('images/Party_in_the_USA.jpg'),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 30),
-                        Container(
-                          width: 150,
-                          height: 150,
-                          decoration: const BoxDecoration(
-                            image: DecorationImage(
-                              image: AssetImage('images/Snsd_itnw_cover.png'),
+                              image: AssetImage('images/sky_album.jpg'),
                             ),
                           ),
                         ),
