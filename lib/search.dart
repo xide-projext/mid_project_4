@@ -1,4 +1,13 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/widgets.dart';
+import 'dart:async';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/services.dart';
+import 'if_simplescaleanimation.dart';
+import 'imagp_simplescaleanimation.dart';
 import 'main.dart';
 import 'my_page.dart';
 
@@ -89,6 +98,10 @@ class _SearchScreenState extends State<SearchScreen> {
     'Introduce Me a Good Person',
     'Some Other Song',
     'Another Song',
+    'Drama OSTs',
+    'Christmas Song',
+    'KPOP',
+    '10,000 Hours',
   ];
 
   List<String> filteredData = [];
@@ -122,14 +135,14 @@ class _SearchScreenState extends State<SearchScreen> {
     }
   }
 
-  void _onSearchResultTap(String searchItem) {
-    _searchController.text = searchItem;
-    _navigateToSearchList(searchItem);
-  }
-
   void _navigateToSearchList(String searchText) {
     if (searchText.isNotEmpty) {
-      Navigator.pushNamed(context, '/searchList', arguments: searchText);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SearchResults(searchText: searchText),
+        ),
+      );
     }
   }
 
@@ -144,6 +157,14 @@ class _SearchScreenState extends State<SearchScreen> {
       appBar: AppBar(
         title: const Text('MusiQ - Search'),
         backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.search),
+            onPressed: () {
+              _onSearchButtonPressed();
+            },
+          ),
+        ],
       ),
       body: Column(
         children: <Widget>[
@@ -170,7 +191,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 return ListTile(
                   title: Text(filteredData[index]),
                   onTap: () {
-                    _onSearchResultTap(filteredData[index]);
+                    _navigateToSearchList(filteredData[index]);
                   },
                 );
               },
@@ -203,7 +224,8 @@ class SearchListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String searchText = ModalRoute.of(context)!.settings.arguments as String;
+    final String searchText =
+        ModalRoute.of(context)!.settings.arguments as String;
 
     return Scaffold(
       appBar: AppBar(
@@ -219,8 +241,10 @@ class SearchListScreen extends StatelessWidget {
                 width: 100,
                 child: Image.asset('images/if_taeyeon.jpeg'),
               ),
-              title: Text(searchText, style: const TextStyle(color: Colors.black)),
-              subtitle: const Text('Taeyeon', style: TextStyle(color: Colors.black)),
+              title:
+                  Text(searchText, style: const TextStyle(color: Colors.black)),
+              subtitle:
+                  const Text('Taeyeon', style: TextStyle(color: Colors.black)),
               trailing: const Icon(Icons.play_arrow),
             ),
             ListTile(
@@ -229,8 +253,73 @@ class SearchListScreen extends StatelessWidget {
                 width: 100,
                 child: Image.asset('images/hospitalplaylistcover.jpeg'),
               ),
-              title: Text(searchText, style: const TextStyle(color: Colors.black)),
-              subtitle: const Text('Joy', style: TextStyle(color: Colors.black)),
+              title:
+                  Text(searchText, style: const TextStyle(color: Colors.black)),
+              subtitle:
+                  const Text('Joy', style: TextStyle(color: Colors.black)),
+              trailing: const Icon(Icons.play_arrow),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class SearchResults extends StatelessWidget {
+  final String searchText;
+
+  SearchResults({required this.searchText});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color.fromARGB(255, 224, 45, 255),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+        title: const Text('Search Results'),
+      ),
+      body: Center(
+        child: ListView(
+          children: [
+            ListTile(
+              leading: SizedBox(
+                height: 100,
+                width: 100,
+                child: GestureDetector(
+                  child: Image.asset('assets/images/if_taeyeon.jpeg'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/if');
+                  },
+                ),
+              ),
+              title:
+                  Text(searchText, style: const TextStyle(color: Colors.black)),
+              subtitle:
+                  const Text('Taeyeon', style: TextStyle(color: Colors.black)),
+              trailing: const Icon(Icons.play_arrow),
+            ),
+            ListTile(
+              leading: SizedBox(
+                height: 100,
+                width: 100,
+                child: GestureDetector(
+                  child:
+                      Image.asset('assets/images/hospitalplaylistcover.jpeg'),
+                  onTap: () {
+                    Navigator.pushNamed(context, '/hospitalplaylist');
+                  },
+                ),
+              ),
+              title:
+                  Text(searchText, style: const TextStyle(color: Colors.black)),
+              subtitle:
+                  const Text('Joy', style: TextStyle(color: Colors.black)),
               trailing: const Icon(Icons.play_arrow),
             ),
           ],
